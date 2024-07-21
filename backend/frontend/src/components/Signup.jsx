@@ -29,7 +29,7 @@ function Signup() {
     }
 
     try {
-      const url = "http://localhost:5001/auth/signup";
+      const url = `${window.location.origin}/auth/signup`;
       const response = await fetch(url, {
         method: "POST",
         headers: {

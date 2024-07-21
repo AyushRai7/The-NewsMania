@@ -54,8 +54,8 @@ const Home = () => {
   
     try {
       const endpoint = isBookmarked
-        ? "http://localhost:5001/auth/bookmark"
-        : "http://localhost:5001/auth/removeBookmark";
+        ? `${window.location.origin}/auth/bookmark`
+        : `${window.location.origin}/auth/removeBookmark`;
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
