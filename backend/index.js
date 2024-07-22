@@ -6,19 +6,12 @@ require("dotenv").config();
 require("./Models/db");
 const authRouter = require("./Routes/authrouter");
 const productRouter = require("./Routes/productrouter");
-const PORT = process.env.PORT;
-const path = require("path");
+const PORT = process.env.PORT || 5001;
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use("/auth", authRouter);
 app.use("/products", productRouter);
-
-app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

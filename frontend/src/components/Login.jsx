@@ -28,7 +28,7 @@ function Login() {
     }
 
     try {
-      const url = `${window.location.origin}/auth/login`;
+      const url = 'http://localhost:5001/auth/login';
       const response = await fetch(url, {
         method: "POST",
         headers: {
