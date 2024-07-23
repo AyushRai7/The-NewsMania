@@ -54,8 +54,8 @@ const Home = () => {
   
     try {
       const endpoint = isBookmarked
-        ? 'http://localhost:5001/auth/bookmark'
-        : 'http://localhost:5001/auth/removeBookmark';
+        ? 'https://the-newsmania-backend.onrender.com/auth/bookmark'
+        : 'https://the-newsmania-backend.onrender.com/auth/removeBookmark';
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
