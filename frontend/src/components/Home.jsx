@@ -1,4 +1,3 @@
-// frontend/src/components/Home.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
@@ -23,9 +22,12 @@ const Home = () => {
 
   const fetchNews = async () => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/news?category=${category}&searchTerm=${searchTerm}&isSearching=${isSearching}`
-      );
+      const apiKey = "d7cd0a4a640f4ec0ad86512b42dad260"; // Make sure this is valid
+      const endpoint = isSearching
+        ? `https://newsapi.org/v2/everything?q=${searchTerm}&language=en&apiKey=${apiKey}`
+        : `https://newsapi.org/v2/top-headlines?country=in&category=${category}&language=en&apiKey=${apiKey}`;
+
+      const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error(`Error fetching news: ${response.statusText}`);
       }
@@ -44,12 +46,12 @@ const Home = () => {
 
   const handleBookmark = async (index, article) => {
     const isBookmarked = !bookmarked[index];
-
+  
     setBookmarked((prevState) => ({
       ...prevState,
       [index]: isBookmarked,
     }));
-
+  
     try {
       const endpoint = isBookmarked
         ? 'https://the-newsmania-backend.onrender.com/auth/bookmark'
@@ -64,7 +66,7 @@ const Home = () => {
           article: isBookmarked ? article : { url: article.url },
         }),
       });
-
+  
       if (response.ok) {
         toast.success(
           `Article ${isBookmarked ? "bookmarked" : "unbookmarked"} successfully`
@@ -88,6 +90,8 @@ const Home = () => {
       );
     }
   };
+  
+  
 
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
