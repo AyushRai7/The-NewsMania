@@ -12,7 +12,7 @@ function Bookmark() {
 
   const fetchBookmarkedArticles = async () => {
     try {
-      const response = await fetch("https://the-newsmania-backend.onrender.com/auth/bookmark", {
+      const response = await fetch("http://localhost:5001/auth/bookmark", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,7 @@ function Bookmark() {
   
   const handleRemoveBookmark = async (article) => {
     try {
-      const response = await fetch('https://the-newsmania-backend.onrender.com/auth/removeBookmark', {
+      const response = await fetch('http//localhost:5001/auth/removeBookmark', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

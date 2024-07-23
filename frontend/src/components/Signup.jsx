@@ -29,7 +29,7 @@ function Signup() {
     }
 
     try {
-      const url = 'https://the-newsmania-backend.onrender.com/auth/signup';
+      const url = 'http://localhost:5001/auth/signup';
       const response = await fetch(url, {
         method: "POST",
         headers: {
