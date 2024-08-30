@@ -36,14 +36,14 @@ function Bookmark() {
   
   const handleRemoveBookmark = async (article) => {
     try {
-      const response = await fetch('http//localhost:5001/auth/removeBookmark', {
+      const response = await fetch('http://localhost:5001/auth/removeBookmark', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
-          id: localStorage.getItem("userId"), // Ensure you're using _id here
+          id: localStorage.getItem("userId"),
           articleUrl: article.url,
         }),
       });
