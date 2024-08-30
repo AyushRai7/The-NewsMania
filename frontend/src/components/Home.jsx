@@ -46,16 +46,16 @@ const Home = () => {
 
   const handleBookmark = async (index, article) => {
     const isBookmarked = !bookmarked[index];
-  
+
     setBookmarked((prevState) => ({
       ...prevState,
       [index]: isBookmarked,
     }));
-  
+
     try {
       const endpoint = isBookmarked
-        ? 'http://localhost:5001/auth/bookmark'
-        : 'http://localhost:5001/auth/removeBookmark';
+        ? "http://localhost:5001/auth/bookmark"
+        : "http://localhost:5001/auth/removeBookmark";
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -66,7 +66,7 @@ const Home = () => {
           article: isBookmarked ? article : { url: article.url },
         }),
       });
-  
+
       if (response.ok) {
         toast.success(
           `Article ${isBookmarked ? "bookmarked" : "unbookmarked"} successfully`
@@ -90,8 +90,6 @@ const Home = () => {
       );
     }
   };
-  
-  
 
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
@@ -173,6 +171,7 @@ const Home = () => {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             placeholder="Search here..."
           />
           <button className="search-btn" onClick={handleSearch}>
