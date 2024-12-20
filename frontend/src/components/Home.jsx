@@ -22,17 +22,17 @@ const Home = () => {
 
   const fetchNews = async () => {
     try {
-      const apiKey = "d7cd0a4a640f4ec0ad86512b42dad260"; // Make sure this is valid
+      const apiKey = "c42b8f8e384178ebd1be2ded1512767d"; 
       const endpoint = isSearching
-        ? `https://newsapi.org/v2/everything?q=${searchTerm}&language=en&apiKey=${apiKey}`
-        : `https://newsapi.org/v2/top-headlines?country=in&category=${category}&language=en&apiKey=${apiKey}`;
+        ? `http://api.mediastack.com/v1/news?access_key=${apiKey}&keywords=${searchTerm}&languages=en`
+        : `http://api.mediastack.com/v1/news?access_key=${apiKey}&categories=${category}&countries=in&languages=en`;
 
       const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error(`Error fetching news: ${response.statusText}`);
       }
       const data = await response.json();
-      setArticles(data.articles);
+      setArticles(data.data); // Mediastack uses `data` instead of `articles`
     } catch (error) {
       console.error("Error fetching news:", error);
       toast.error("Failed to fetch news. Please try again later.");
@@ -190,7 +190,7 @@ const Home = () => {
                 alt="bookmark"
               />
               <img
-                src={article.urlToImage || news_img}
+                src={article.image || news_img} // Mediastack uses 'image' for the article image
                 className="news-img"
                 alt="news"
               />
@@ -206,6 +206,7 @@ const Home = () => {
                   ...more
                 </a>
               </p>
+
               <button>
                 <a href={article.url} target="_blank" rel="noopener noreferrer">
                   Read more
