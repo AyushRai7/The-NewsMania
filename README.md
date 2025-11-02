@@ -38,6 +38,7 @@ It fetches real-time headlines, **summarizes** each article using AI, and lets u
 ## 🖼️ Screenshots
 
 <img width="2844" height="1470" alt="Screenshot 2025-11-02 135650" src="https://github.com/user-attachments/assets/94d99246-4f9b-41e9-b22e-2d02240bfb8c" />
+
 <img width="2838" height="1467" alt="Screenshot 2025-11-02 161834" src="https://github.com/user-attachments/assets/e7b14930-d2b9-4beb-9556-d194b5ac7f12" />
 
 ---
@@ -64,6 +65,6 @@ It fetches real-time headlines, **summarizes** each article using AI, and lets u
 git clone https://github.com/yourusername/newsmania.git
 cd newsmania
 
-# The project has two folders:
-# backend/  → npm start
-# frontend/ → npm run dev
+The project has two folders:
+backend/  → npm start
+frontend/ → npm run dev
