@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
 const extractUserIdFromToken = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]; // Extract token from 'Bearer <token>'
@@ -15,4 +15,4 @@ const extractUserIdFromToken = (req, res, next) => {
   }
 };
 
-module.exports = extractUserIdFromToken;
+export default extractUserIdFromToken;

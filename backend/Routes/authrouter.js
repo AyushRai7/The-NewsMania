@@ -1,8 +1,11 @@
-const router = require("express").Router();
-const { signup, login } = require("../Controllers/authcontroller");
-const { signupValidation, loginValidation } = require("../Middlewares/authvalidation");
-const User = require("../Models/user");
-const extractUserIdFromToken = require("../Middlewares/ExtractUserId");
+import express from "express";
+const router = express.Router();
+
+import { signup, login } from "../Controllers/authcontroller.js";
+import { signupValidation, loginValidation } from "../Middlewares/authvalidation.js";
+import User from "../Models/user.js";
+import extractUserIdFromToken from "../Middlewares/ExtractUserId.js";
+
 
 router.post("/login", loginValidation, login);
 
@@ -65,4 +68,4 @@ router.post("/removeBookmark", extractUserIdFromToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const mongoURL =
   "mongodb+srv://newsmania:iPYsvpVKiYC2t68y@clusternewsmania.0x8it46.mongodb.net/newsmania_db?retryWrites=true&w=majority&appName=ClusterNewsmania";

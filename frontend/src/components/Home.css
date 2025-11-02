@@ -1,400 +1,408 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
+/* ---------------------- Base & Container ---------------------- */
+:root {
+  --bg-light: #f8f9fa;
+  --text-light: #222;
+  --card-light: #fff;
+  --bg-dark: #121212;
+  --text-dark: #eee;
+  --card-dark: #1e1e1e;
+}
 
-* {
+[data-theme="light"] {
+  --bg: var(--bg-light);
+  --text: var(--text-light);
+  --card: var(--card-light);
+}
+
+[data-theme="dark"] {
+  --bg: var(--bg-dark);
+  --text: var(--text-dark);
+  --card: var(--card-dark);
+}
+
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
 .container {
-  width: 100%;
-  margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
+/* ---------------------- Navbar ---------------------- */
 nav {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 19px;
+  padding: 12px 30px;
+  background: var(--card);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+[data-theme="dark"] nav.scrolled {
+  background: rgba(30, 30, 30, 0.7);
 }
 
 .logo-area {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .logo-area img {
-  width: 55px;
-  mix-blend-mode: multiply;
+  height: 45px;
 }
 
 .logo-area h2 {
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 1.4rem;
+  margin: 0;
 }
 
 .logo-area span {
-  color: rgb(60, 60, 212);
+  color: #007bff;
 }
 
 .nav-links {
   display: flex;
-  justify-content: space-between;
-  position: relative;
+  align-items: center;
+  gap: 20px;
 }
 
 .nav-links a {
-  font-size: 17px;
-  font-weight: 500;
-  color: gray;
+  color: var(--text);
   text-decoration: none;
-  cursor: pointer;
-  padding: 0px 12px;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: rgb(60, 60, 212);
+  color: #007bff;
 }
 
-.categories:hover .dropdown-menu {
-  display: block;
+/* ---------------------- Category Dropdown ---------------------- */
+.categories {
+  position: relative;
 }
 
 .dropdown-menu {
-  display: none;
   position: absolute;
-  top: 100%;
+  top: 110%;
   left: 0;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  background: var(--card);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  z-index: 9999;
+  animation: dropdownFade 0.25s ease;
+}
+
+.categories:hover .dropdown-menu {
+  display: flex;
 }
 
 .dropdown-menu a {
-  display: block;
-  padding: 10px 20px;
+  padding: 10px 15px;
   text-decoration: none;
-  color: #333;
-  white-space: nowrap;
+  color: var(--text);
+  transition: background 0.2s ease;
 }
 
 .dropdown-menu a:hover {
-  background-color: #f1f1f1;
+  background: rgba(0, 123, 255, 0.1);
 }
 
-.log-cont .logout-btn {
-  margin-right: 25px;
-  width: 80px;
-  height: 35px;
-  border: 0;
-  outline: 0;
-  background-color: rgb(60, 60, 212);
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------- Search + Theme ---------------------- */
+.log-cont {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-btn {
+  background: #ff4757;
   color: #fff;
-  border-radius: 9px;
-  font-size: 15px;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: 0.2s;
 }
+
 .logout-btn:hover {
-  background-color: rgb(39, 39, 214);
+  background: #e84118;
 }
-.log-cont input {
-  height: 10px;
-  margin-right: 10px;
-  width: 150px;
-  border-radius: 1rem;
-  padding: 1rem;
-  font-size: 16px;
-  outline: 0;
-  border: 2px solid rgb(60, 60, 212);
+
+input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
 }
 
 .search-btn {
-  width: 65px;
-  height: 25px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
   border-radius: 6px;
-  outline: none;
-  border: 1px solid black;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
+.search-btn:hover {
+  background: #0056b3;
+}
+
+/* ---------------------- Theme Toggle ---------------------- */
+.theme-toggle {
+  width: 45px;
+  height: 24px;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid #007bff;
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle.dark {
+  background: linear-gradient(135deg, #222, #555);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-circle {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  transition: left 0.3s ease;
+}
+
+.theme-toggle.dark .toggle-circle {
+  left: 22px;
+  background: #f1c40f;
+}
+
+/* ---------------------- News Cards ---------------------- */
 .main {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  flex: 1;
+  padding: 30px;
 }
 
 .news-cont {
-  display: flex;
-  width: 69%;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
 }
 
 .card {
-  width: 30%;
-  height: 400px;
-  margin: 15px;
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
-  box-shadow: 0px 0px 10px rgb(178, 177, 177);
-  border-radius: 1rem;
-  transition: transform 0.2s; /* Smooth hover effect */
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: perspective(60px) translateZ(2px);
+  transform: translateY(-6px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-.card .bookmark {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  transition: transform 0.2s; /* Smooth hover effect */
-}
-
-.bookmark:hover {
-  transform: scale(1.3);
-}
-
-.card .news-img {
+.card img.news-img {
   width: 100%;
-  height: 140px;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
 .card .head {
-  padding: 0 5px;
-  font-size: 18px;
-  font-weight: 500;
-  word-wrap: break-word;
+  font-size: 1rem;
+  margin: 12px 0;
 }
 
-.card p {
-  padding: 2px 5px;
-  font-size: 14px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.card button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .card button a {
+  color: white;
+  text-decoration: none;
+}
+
+
+
+.bookmark {
   position: absolute;
   bottom: 10px;
-  left: 10px;
-  padding: 5px;
-  border: 0;
-  outline: none;
-  background-color: rgb(74, 74, 214);
-  color: white;
-  border-radius: 4px;
-  text-decoration: none;
-}
-.card button a:hover {
-  background-color: rgb(39, 39, 214);
-}
-.card p a {
-  text-decoration: none;
-  font-size: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 2;
 }
 
-footer {
-  width: 100%;
-  height: 80px;
-  background-color: rgb(165, 165, 165);
-  display: flex;
-  justify-content: center;
-  align-items: end;
-  margin-top: 20px;
+.bookmark:hover {
+  transform: scale(1.15);
 }
 
-.cont {
-  width: 400px;
-  height: 450px;
-  border: 2.1px solid rgb(60, 60, 212);
-  padding: 20px 40px;
-  border-radius: 8px;
-  margin: 3% 33%;
-}
-
-.signup-heading {
-  text-align: center;
-  margin-bottom: 20px;
-  font-weight: 500;
-}
-
-.signup-heading span {
-  color: rgb(60, 60, 212);
-}
-
-.Input {
-  display: flex;
-  flex-direction: column;
-  margin: 10px 0;
-}
-
-label {
-  margin: 8px 0;
-  font-weight: 450;
-}
-
-input {
-  width: 100%;
-  height: 29px;
-  padding: 1rem;
-  font-size: 15px;
-  border-radius: 10px;
-  border: 1px solid rgb(81, 81, 83);
-  outline-color: rgb(60, 60, 212);
-}
-
-.bottom {
+/* ---------------------- Expand Overlay ---------------------- */
+.expanded-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  z-index: 9998;
+  animation: fadeIn 0.3s ease;
 }
 
-.signup {
-  font-size: 15px;
-  color: white;
-  background-color: rgb(60, 60, 212);
-  border: 0;
-  outline: 0;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 20px 0 15px;
-  width: 70px;
-  height: 30px;
-  transition: transform 0.2s; /* Smooth hover effect */
-}
-
-.signup:hover {
-  transform: scale(1.07);
-}
-
-.cont-login {
-  width: 400px;
-  height: 360px;
-  border: 2.1px solid rgb(60, 60, 212);
-  padding: 20px 40px;
-  border-radius: 8px;
-  margin: 3% 33%;
-}
-
-.login-heading {
-  text-align: center;
-  margin-bottom: 20px;
-  font-weight: 500;
-}
-
-.login-heading span {
-  color: rgb(60, 60, 212);
-}
-
-.login {
-  font-size: 15px;
-  color: white;
-  background-color: rgb(60, 60, 212);
-  border: 0;
-  outline: 0;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 20px 0 15px;
-  width: 70px;
-  height: 30px;
-  transition: transform 0.2s; /* Smooth hover effect */
-}
-
-.login:hover {
-  transform: scale(1.07);
-}
-
-.user-info {
+.expanded-card {
+  background: var(--card);
+  color: var(--text);
+  padding: 25px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 550px;
+  max-height: 85vh;
+  overflow-y: auto;
   position: relative;
+  animation: scaleIn 0.3s ease;
 }
 
-.user-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.logout-button {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.user-info:hover .logout-button {
-  display: block;
-}
-
-.bookmark-cont {
-  width: 69%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 15%;
-}
-.bookmark-head {
-  text-align: center;
-  margin-top: 7%;
-  font-size: 37px;
-  font-weight: 500;
-}
-.bookmark-head span {
-  color: rgb(60, 60, 212);
-}
-.bookmark-list {
+.expanded-card img {
   width: 100%;
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
+  height: a300px;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
-.remove-bookmark-btn {
+
+.expand-icon {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  padding: 5px;
-  border: 0;
-  outline: none;
-  background-color: rgb(74, 74, 214);
+  top: 10px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text);
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.25); /* translucent glass */
+  backdrop-filter: blur(6px);
+  border-radius: 50%;
+  padding: 6px 8px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.expand-icon:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.expanded-card button {
+  background: #007bff;
   color: white;
-  border-radius: 4px;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.expanded-card button a {
+  color: white;
   text-decoration: none;
 }
-.remove-bookmark-btn:hover {
-  background-color: rgb(39, 39, 214);
+
+.translate-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+  z-index: 10000;
 }
+
+.translate-card {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---------------------- Footer ---------------------- */
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+
 
