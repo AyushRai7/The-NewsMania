@@ -38,7 +38,7 @@ It fetches real-time headlines, **summarizes** each article using AI, and lets u
 ## 🖼️ Screenshots
 
 <img width="2844" height="1470" alt="Screenshot 2025-11-02 135650" src="https://github.com/user-attachments/assets/94d99246-4f9b-41e9-b22e-2d02240bfb8c" />
-
+<br><br>
 <img width="2838" height="1467" alt="Screenshot 2025-11-02 161834" src="https://github.com/user-attachments/assets/e7b14930-d2b9-4beb-9556-d194b5ac7f12" />
 
 ---
