@@ -15,31 +15,49 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    console.log(`Fetching article from: ${url}`);
+    console.log("Fetching article:", url);
 
-    const pageResponse = await fetch(url, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; NewsSummarizer/1.0)" },
+    const pageRes = await fetch(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
     });
-    const html = await pageResponse.text();
+
+    if (!pageRes.ok) {
+      return res.status(400).json({
+        message: "Failed to fetch article page",
+      });
+    }
+
+    const html = await pageRes.text();
 
     const $ = cheerio.load(html);
     let articleText = "";
-    $("p, h1, h2").each((_, el) => {
+
+    $("p").each((_, el) => {
       const text = $(el).text().trim();
-      if (text.length > 50) articleText += text + " ";
+      if (text.length > 50) {
+        articleText += text + " ";
+      }
     });
 
+    console.log("Extracted chars:", articleText.length);
+
     if (articleText.length < 200) {
-      return res.status(400).json({ message: "Not enough content extracted" });
+      return res.status(400).json({
+        message: "Not enough content extracted",
+      });
     }
 
-    const MAX_CHARS = 3500; 
+    const MAX_CHARS = 3000;
     if (articleText.length > MAX_CHARS) {
       articleText = articleText.slice(0, MAX_CHARS);
-      console.log("✂️ Truncated article text to fit model limits");
+      console.log("Truncated article text");
     }
-    const hfResponse = await fetch(
-      "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+
+    const hfRes = await fetch(
+      "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
       {
         method: "POST",
         headers: {
@@ -47,24 +65,50 @@ router.post("/", async (req, res) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          inputs: `Summarize this news article in 8–10 clear, factual sentences:\n\n${articleText}`,
-          parameters: { max_length: 350, min_length: 100, temperature: 0.7 },
+          inputs: articleText,
+          parameters: {
+            max_length: 200,
+            min_length: 80,
+            do_sample: false,
+          },
         }),
       }
     );
 
-    const data = await hfResponse.json();
+    const raw = await hfRes.text();
 
-    if (data.error) {
-      console.error("❌ Hugging Face API Error:", data.error);
-      return res.status(500).json({ message: "Summary unavailable due to model limit" });
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      console.error("❌ Non-JSON HF response:", raw);
+      return res.status(502).json({
+        message: "Summarizer service returned invalid data",
+      });
     }
 
-    const summary = data[0]?.summary_text || "Summary not available";
-    res.json({ summary });
+    if (data?.error) {
+      console.error("HF API Error:", data.error);
+      return res.status(502).json({
+        message: data.error,
+      });
+    }
+
+    if (!Array.isArray(data) || !data[0]?.summary_text) {
+      console.error("Unexpected HF format:", data);
+      return res.status(502).json({
+        message: "Failed to generate summary",
+      });
+    }
+
+    res.json({
+      summary: data[0].summary_text,
+    });
   } catch (err) {
-    console.error("🔥 Summarization error:", err);
-    res.status(500).json({ message: "Failed to summarize article" });
+    console.error("Summarizer error:", err);
+    res.status(500).json({
+      message: "Failed to summarize article",
+    });
   }
 });
 
