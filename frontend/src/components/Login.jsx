@@ -31,6 +31,7 @@ function Login() {
       const url = 'http://localhost:5001/auth/login';
       const response = await fetch(url, {
         method: "POST",
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -41,8 +42,6 @@ function Login() {
 
       if (success) {
         handleSuccess(message);
-        localStorage.setItem('token', jwtToken);
-        localStorage.setItem('loggedInUser', username);
         setTimeout(() => {
           navigate("/home");
         }, 1000);

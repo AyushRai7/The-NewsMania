@@ -1,11 +1,13 @@
-import mongoose from "mongoose";
+ import mongoose from "mongoose";
 
-const mongoURL =
-  "mongodb+srv://newsmania:iPYsvpVKiYC2t68y@clusternewsmania.0x8it46.mongodb.net/newsmania_db?retryWrites=true&w=majority&appName=ClusterNewsmania";
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1);
+  }
+};
 
-mongoose
-  .connect(mongoURL)
-  .then(() => console.log("MongoDB Connected..."))
-  .catch((err) => console.log(err));
-
-//iPYsvpVKiYC2t68y  
+export default connectDB;
