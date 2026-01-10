@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import SkeletonCard from "./SkeletonCard";
@@ -42,7 +42,7 @@ const Home = () => {
       if(loading)return;
       setLoading(true);
 
-      const apiKey = "c42b8f8e384178ebd1be2ded1512767d";
+      const apiKey = import.meta.env.NEWS_API_KEY;
       const endpoint = isSearching
         ? `http://api.mediastack.com/v1/news?access_key=${apiKey}&keywords=${searchTerm}&languages=en`
         : `http://api.mediastack.com/v1/news?access_key=${apiKey}&categories=${category}&countries=in&languages=en`;
@@ -68,7 +68,7 @@ const Home = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url }),
-    });
+    }); 
 
     const data = await res.json();
 

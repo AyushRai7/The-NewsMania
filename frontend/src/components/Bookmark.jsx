@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import logo from "../assets/logo.png";
 import news_img from "../assets/default-news-img.webp";
 import blackFilledBookmark from "../assets/blackFilledBookmark.png";
@@ -22,7 +22,7 @@ const Bookmark = () => {
   try {
     const res = await fetch("http://localhost:5001/auth/bookmark", {
       method: "GET",
-      credentials: "include", // ✅ send cookie
+      credentials: "include", 
     });
 
     if (res.status === 401 || res.status === 403) {
@@ -44,7 +44,7 @@ const Bookmark = () => {
   try {
     const res = await fetch("http://localhost:5001/auth/removeBookmark", {
       method: "POST",
-      credentials: "include", // ✅ send cookie
+      credentials: "include", 
       headers: {
         "Content-Type": "application/json",
       },

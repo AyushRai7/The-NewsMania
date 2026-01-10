@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,7 +38,7 @@ function Login() {
         body: JSON.stringify(loginInfo),
       });
       const result = await response.json();
-      const { success, message, jwtToken, username, error } = result;
+      const { success, message, error } = result;
 
       if (success) {
         handleSuccess(message);

@@ -17,7 +17,7 @@ function App() {
     <div>
       <Refreshhandle setisAuthenticated={setisAuthenticated} />
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} /> 
+        <Route path="/" element={<PrivateRoute element={<Home />} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/bookmark" element={<Bookmark />} />
