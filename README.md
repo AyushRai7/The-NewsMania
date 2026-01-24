@@ -9,10 +9,10 @@ It fetches real-time headlines, **summarizes** each article using AI, and lets u
 
 ### 🧠 AI-Powered Summarization
 - Automatically generates concise and readable summaries for every news article.  
-- Built using AI APIs for fast and accurate contextual understanding.
+- Built using **HuggingFace APIs** for fast and accurate contextual understanding.
 
 ### 🌐 Multi-Language Translation
-- Instantly translate both article **titles and summaries** into 10+ languages.  
+- Instantly translate article **summaries** into 10+ languages.  
 - Uses free, reliable translation APIs for seamless performance.
 
 ### 🕶️ Dark/Light Mode
@@ -52,7 +52,8 @@ It fetches real-time headlines, **summarizes** each article using AI, and lets u
 
 ### **Backend**
 - Node.js + Express.js
-- MongoDB Atlas with Mongoose
+- MongoDB
+- Redis
 - JWT Authentication
 - AI Summarizer & Translation APIs (LibreTranslate, HuggingFace)
 
