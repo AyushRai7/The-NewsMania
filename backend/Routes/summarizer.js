@@ -1,6 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
+import redisClient from "../redisClient.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,6 +13,14 @@ router.post("/", async (req, res) => {
 
   if (!url) {
     return res.status(400).json({ message: "Article URL is required" });
+  }
+
+  const cacheKey = `summary:url:${encodeURIComponent(url)}`;
+
+  const cachedSummary = await redisClient.get(cacheKey);
+  if (cachedSummary) {
+    console.log("Served summary from redis");
+    return res.json({ summary: cachedSummary });
   }
 
   try {
@@ -72,7 +81,7 @@ router.post("/", async (req, res) => {
             do_sample: false,
           },
         }),
-      }
+      },
     );
 
     const raw = await hfRes.text();
@@ -100,6 +109,10 @@ router.post("/", async (req, res) => {
         message: "Failed to generate summary",
       });
     }
+
+    await redisClient.set(cacheKey, data[0].summary_text, {
+      EX: 60 * 60 , // 1 hours
+    });
 
     res.json({
       summary: data[0].summary_text,

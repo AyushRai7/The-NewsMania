@@ -1,5 +1,7 @@
 import express from "express";
 import fetch from "node-fetch";
+import crypto from "crypto";
+import redisClient from "../redisClient.js";
 
 const router = express.Router();
 
@@ -8,6 +10,18 @@ router.post("/", async (req, res) => {
 
   if (!title || !text || !targetLang) {
     return res.status(400).json({ message: "Missing title, text, or targetLang" });
+  }
+
+  const hashText= (text)=>{
+    crypto.createHash("sha256").update(text).digest("hex");
+  }
+
+  const textHash=hashText(text);
+  const cacheKey = `translation:${textHash}:lang:${targetLang}`;
+  const cachedTranslation = await redisClient.get(cacheKey);
+  if (cachedTranslation) {
+    console.log("Served translation from redis");
+    return res.json(JSON.parse(cachedTranslation));
   }
 
   const chunks = [];
@@ -44,6 +58,15 @@ router.post("/", async (req, res) => {
     const translatedTitle = titleData.responseData
       ? titleData.responseData.translatedText
       : title;
+    
+    const responsePayload = {
+      translatedTitle,
+      translatedText,
+    }
+
+    await redisClient.set(cacheKey, JSON.stringify(responsePayload), {
+      EX: 60*60, // 1 hour
+    });
 
     res.json({
       translatedTitle,
