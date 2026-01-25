@@ -5,6 +5,10 @@ import redisClient from "../redisClient.js";
 
 const router = express.Router();
 
+const hashText = (value) => {
+  return crypto.createHash("sha256").update(value).digest("hex");
+};
+
 router.post("/", async (req, res) => {
   const { title, text, targetLang } = req.body;
 
@@ -12,15 +16,14 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ message: "Missing title, text, or targetLang" });
   }
 
-  const hashText= (text)=>{
-    crypto.createHash("sha256").update(text).digest("hex");
-  }
+  const textHash = hashText(text);
+  const titleHash = hashText(title);
 
-  const textHash=hashText(text);
-  const cacheKey = `translation:${textHash}:lang:${targetLang}`;
+  const cacheKey = `translation:${textHash}:${titleHash}:lang:${targetLang}`;
+
   const cachedTranslation = await redisClient.get(cacheKey);
   if (cachedTranslation) {
-    console.log("Served translation from redis");
+    console.log("✅ Served translation from Redis");
     return res.json(JSON.parse(cachedTranslation));
   }
 
@@ -58,20 +61,17 @@ router.post("/", async (req, res) => {
     const translatedTitle = titleData.responseData
       ? titleData.responseData.translatedText
       : title;
-    
+
     const responsePayload = {
       translatedTitle,
       translatedText,
-    }
+    };
 
     await redisClient.set(cacheKey, JSON.stringify(responsePayload), {
-      EX: 60*60, // 1 hour
+      EX: 60 * 60, // 1 hour TTL
     });
 
-    res.json({
-      translatedTitle,
-      translatedText,
-    });
+    res.json(responsePayload);
   } catch (err) {
     console.error("Translation error:", err);
     res.status(500).json({ message: "Translation failed" });

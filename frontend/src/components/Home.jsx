@@ -38,25 +38,32 @@ const Home = () => {
   }, [category, isSearching]);
 
   const fetchNews = async () => {
-    try {
-      if(loading)return;
-      setLoading(true);
+  try {
+    if (loading) return;
+    setLoading(true);
 
-      const apiKey = import.meta.env.NEWS_API_KEY;
-      const endpoint = isSearching
-        ? `http://api.mediastack.com/v1/news?access_key=${apiKey}&keywords=${searchTerm}&languages=en`
-        : `http://api.mediastack.com/v1/news?access_key=${apiKey}&categories=${category}&countries=in&languages=en`;
+    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-      const response = await fetch(endpoint);
-      const data = await response.json();
+    const endpoint = isSearching
+      ? `${BASE_URL}/api/news?search=${encodeURIComponent(searchTerm)}`
+      : `${BASE_URL}/api/news?category=${category}`;
 
-      setArticles(data?.data || []);
-    } catch (error) {
-      toast.error("Error fetching news");
-    } finally {
-      setLoading(false);
+    const response = await fetch(endpoint);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to fetch news");
     }
-  };
+
+    setArticles(data?.articles || []);
+  } catch (error) {
+    toast.error("Error fetching news");
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const fetchSummary = async (url, index) => {
   if (!url) return;
