@@ -63,7 +63,7 @@ It fetches real-time headlines, **summarizes** each article using AI, and lets u
 
 ### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/yourusername/newsmania.git
+git clone https://github.com/AyushRai7/newsmania.git
 cd newsmania
 
 The project has two folders:
